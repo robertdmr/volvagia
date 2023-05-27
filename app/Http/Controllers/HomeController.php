@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Lead;
 use Illuminate\Http\Request;
+use App\Models\Projects;
+use App\Models\User;
 
 class HomeController extends Controller
 {
@@ -23,6 +26,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $leads = Lead::where('user_id', auth()->user()->id)->get();
+        if(auth()->user()->isAdmin()){
+            $leads = Lead::all();
+        }
+        $projects = Projects::all();
+        $users = User::all();
+        return view('home', compact('leads', 'projects','users'));
     }
 }

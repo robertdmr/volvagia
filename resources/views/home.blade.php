@@ -15,7 +15,7 @@
                 <div class="card bg-secondary shadow my-1">
                     <div class="card-body text-white">
                         <h5>PENDIENTES</h5>
-                        <span class="h3">30</span>
+                        <span class="h3">0</span>
                     </div>
                 </div>
             </div>
@@ -23,7 +23,7 @@
                 <div class="card bg-secondary shadow my-1">
                     <div class="card-body text-white">
                         <h5>PROYECTOS</h5>
-                        <span class="h3">45</span>
+                        <span class="h3">0</span>
                     </div>
                 </div>
             </div>
@@ -31,7 +31,7 @@
                 <div class="card bg-secondary shadow my-1">
                     <div class="card-body text-white">
                         <h5>PARA HOY</h5>
-                        <span class="h3">12</span>
+                        <span class="h3">0</span>
                     </div>
                 </div>
             </div>
@@ -120,17 +120,96 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"><span id="action">Agregar</span>Lead</h5>
+                    <h5 class="modal-title"><span id="action">Agregar</span> Lead</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="frmDatos" method="POST">
-                        <div class="my-2">
-                            <label for="name" class="form-label">Nombre</label>
-                            <input type="text" name="name" id="name" class="form-control">
-                            <input type="hidden" name="id" id="id">
+                        <div class="row my-2">
+                            <div class="col-4">
+                                <label for="c">C</label>
+                                <input type="text" class="form-control" name="c">
+                            </div>
+                            <div class="col-4">
+                                <label for="as">As</label>
+                                <input type="text" class="form-control" name="as">
+                            </div>
+                            <div class="col-4">
+                                <label for="fecha">Fecha</label>
+                                <input type="date" class="form-control" name="fecha">
+                            </div>
                         </div>
 
+                        <div class="row my-2">
+                            <div class="col-6">
+                                <label for="ajetreo">Ajetreo</label>
+                                <input type="text" class="form-control" id="ajetreo" name="ajetreo">
+                            </div>
+                            <div class="col-6">
+                                <label for="project_id">Proyecto</label>
+                                <select name="project_id" id="project_id" class="form-control">
+                                    <option value="">Seleccione</option>
+                                    @foreach ($projects as $project)
+                                        <option value="{{ $project->id }}">{{ $project->nombre }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="nombre">Nombre</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="telefono">Telefono</label>
+                                <input type="text" name="telefono" class="form-control">
+                            </div>
+                            <div class="col-6">
+                                @if(Auth::user()->role == 'admin')
+                                <label for="usuario">Usuario</label>
+                                <select name="user_id" id="user_id" class="form-control">
+                                    <option value="">Seleccione</option>
+                                    @foreach ($users as $user)
+                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                    @endforeach
+                                </select>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="referente">Referente</label>
+                                <input type="text" name="referente" id="referente" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="comentario">Comentario</label>
+                                <textarea name="comentario" id="comentario" cols="30" rows="3"
+                                    class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                <label for="x">X</label>
+                                <input type="text" class="form-control" id="x" name="x">
+                            </div>
+                            <div class="col-3">
+                                <label for="e">E</label>
+                                <input type="text" class="form-control" id="E" name="E">
+                            </div>
+                            <div class="col-3">
+                                <label for="blanco">Blanco</label>
+                                <input type="text" class="form-control" id="blanco" name="blanco">
+                            </div>
+                            <div class="col-3">
+                                <label for="mes">Mes</label>
+                                <input type="text" class="form-control" id="mes" name="mes">
+                            </div>
+                        </div>
+                        <hr>
                         <div class="my-2 text-end">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                             <button type="submit" class="btn btn-primary">Guardar</button>
@@ -174,5 +253,11 @@
                 };
             })
         })
+        function openModalDatos() {
+            $('form#frmDatos')[0].reset();
+            $("form").attr("action", "{{ url('leads.update') }}");
+            $('#datosModal').modal('show');
+            $('#action').text("Agregar");
+        }
     </script>
 @endsection
