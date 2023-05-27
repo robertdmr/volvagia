@@ -6,3 +6,20 @@
 
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
+
+.logo {
+    font-family: 'Russo One', sans-serif;
+}
+
+body {
+    font-family: 'Prompt', sans-serif;
+    background-image: url('../../images/welcome.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+#main {
+    background-color: rgba(24, 23, 23, 0.5);
+    /* Cambia el último valor (0.5) para ajustar la opacidad */
+}
