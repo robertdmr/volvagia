@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('as');
             $table->date('fecha');
             $table->string('referente')->nullable();
-            $table->foreignId('proyecto_id')->nullable()->constrained();
+            $table->foreignId('project_id')->nullable()->constrained();
             $table->string('nombre')->nullable();
             $table->string('telefono')->nullable();
             $table->string('X')->nullable();
