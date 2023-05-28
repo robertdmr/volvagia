@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\api\LeadController;
+use App\Http\Controllers\api\ProjectsController;
 use App\Http\Controllers\api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,3 +30,7 @@ Route::delete('/users/{user}', [UserController::class, 'destroy']);
 Route::post('/leads', [LeadController::class, 'store']);
 Route::put('/leads/{lead}', [LeadController::class, 'update']);
 Route::delete('/leads/{lead}', [LeadController::class, 'destroy']);
+
+// PROYECTOS
+Route::post('/projects', [ProjectsController::class, 'store']);
+Route::get('/projects', [ProjectsController::class, 'index']);

@@ -125,6 +125,7 @@
                 </div>
                 <div class="modal-body">
                     <form id="frmDatos" method="POST">
+                        @CSRF
                         <div class="row my-2">
                             <div class="col-4">
                                 <label for="c">C</label>
@@ -146,7 +147,9 @@
                                 <input type="text" class="form-control" id="ajetreo" name="ajetreo">
                             </div>
                             <div class="col-6">
-                                <label for="project_id">Proyecto</label>
+                                <label for="project_id">Proyecto
+                                    <i class="fa-solid fa-circle-plus text-warning" role="button" onclick="openModalProyectos();return false;"></i>
+                                </label>
                                 <select name="project_id" id="project_id" class="form-control">
                                     <option value="">Seleccione</option>
                                     @foreach ($projects as $project)
@@ -198,7 +201,7 @@
                             </div>
                             <div class="col-3">
                                 <label for="e">E</label>
-                                <input type="text" class="form-control" id="E" name="E">
+                                <input type="text" class="form-control" id="e" name="e">
                             </div>
                             <div class="col-3">
                                 <label for="blanco">Blanco</label>
@@ -213,6 +216,41 @@
                         <div class="my-2 text-end">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                             <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="datosProyectos" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span id="action">Agregar</span> Proyecto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#datosProyectos" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ url('/project') }}"  id="frmPoyecto" method="POST">
+                        @CSRF
+                        <div class="row">
+                            <div class="col">
+                                <label for="nombre">Nombre</label>
+                                <input type="text" name="nombre" id="nombre" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="descripcion">Descripcion</label>
+                                <textarea name="descripcion" id="descripcion" cols="30" rows="3"
+                                    class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col text-end">
+                                <button class="btn btn-primary">Guardar</button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -259,5 +297,113 @@
             $('#datosModal').modal('show');
             $('#action').text("Agregar");
         }
+        function openModalProyectos(){
+            $('#datosProyectos').modal('show');
+        }
+
+        $('form#frmDatos').on('submit', function(e) {
+            e.preventDefault();
+            var form = $(this);
+            var data = form.serialize();
+            var url = "{{ url('/api/leads') }}";
+            var xmethod = "POST";
+            if ($("#action").text() == "Editar") {
+                xmethod = "PUT";
+                url += "/" + $('#id').val();
+            }
+            console.log(xmethod)
+            $.ajax({
+                url: url,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: xmethod,
+                data: data,
+                success: function(response) {
+                    if (response == "ok") {
+                        location.reload();
+                    }
+                    console.log(response)
+                },
+                error: function(error) {
+                    const errors = error.responseJSON.errors;
+                    var msg = "";
+                    if (errors) {
+                        $.each(errors, function(key, value) {
+                            msg += value + "\n";
+                        });
+                        alert(msg)
+                    }
+                }
+            });
+        });
+
+        $('form#frmPoyecto').on('submit', function(e) {
+            e.preventDefault();
+            var form = $(this);
+            var data = form.serialize();
+            var url = "{{ url('/api/projects') }}";
+            var xmethod = "POST";
+            $.ajax({
+                url: url,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: xmethod,
+                data: data,
+                success: function(response) {
+                    if (response.message == "ok") {
+                        listarProyectos();
+                        $('#datosProyectos').modal('hide');
+                    }
+                    console.log(response)
+                },
+                error: function(error) {
+                    const errors = error.responseJSON.errors;
+                    var msg = "";
+                    if (errors) {
+                        $.each(errors, function(key, value) {
+                            msg += value + "\n";
+                        });
+                        alert(msg)
+                    }
+                }
+            });
+        });
+
+        function listarProyectos(){
+            var proyectos = $("#project_id")
+            $.ajax({
+                url: "{{ url('/api/projects') }}",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                dataType: "json",
+                method: "GET",
+                success: function(data) {
+                    if (data.message == "ok") {
+                        proyectos.empty();
+                        proyectos.append('<option value="">Seleccione</option>');
+                        $.each(data.projects, function(index, opcion) {
+                            var nuevoOption = $('<option value="' + opcion.id + '">' + opcion.nombre + '</option>');
+                            proyectos.append(nuevoOption);
+                        });
+                    }
+                    console.log(data)
+                },
+                error: function(error) {
+                    const errors = error.responseJSON.errors;
+                    var msg = "";
+                    if (errors) {
+                        $.each(errors, function(key, value) {
+                            msg += value + "\n";
+                        });
+                        alert(msg)
+                    }
+                }
+            });
+        }
+
+
     </script>
 @endsection

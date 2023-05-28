@@ -32,9 +32,7 @@ Route::group(
 
         // USUARIOS
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
-        // Route::post('/users/{id}', [UserController::class, 'update'])->name('users.update');
-        // Route::post('/users', [UserController::class, 'store'])->name('users.store');
-        // Route::post('/users/delete/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+
 
 
     }

@@ -135,10 +135,11 @@
                 type: xmethod,
                 data: data,
                 success: function(response) {
-                    if (response = "ok") {
+                    if (response.message == "ok") {
                         $('#datosModal').modal('hide');
                         location.reload();
                     }
+                    console.log(response)
                 },
                 error: function(error) {
                     const errors = error.responseJSON.errors;
@@ -186,5 +187,7 @@
                 });
             }
         }
+
+
     </script>
 @endsection
