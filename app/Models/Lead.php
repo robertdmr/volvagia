@@ -15,7 +15,7 @@ class Lead extends Model
         'as',
         'fecha',
         'referente',
-        'proyecto_id',
+        'project_id',
         'nombre',
         'telefono',
         'X',
@@ -26,4 +26,8 @@ class Lead extends Model
         'blanco',
         'user_id'
     ];
+
+    public function project(){
+        return $this->belongsTo(Projects::class);
+    }
 }

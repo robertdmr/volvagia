@@ -29,7 +29,9 @@ Route::delete('/users/{user}', [UserController::class, 'destroy']);
 // lEADS
 Route::post('/leads', [LeadController::class, 'store']);
 Route::put('/leads/{lead}', [LeadController::class, 'update']);
+Route::get('/leads/{lead}', [LeadController::class, 'show']);
 Route::delete('/leads/{lead}', [LeadController::class, 'destroy']);
+Route::post('/lead/{lead}', [LeadController::class, 'updateColumn']);
 
 // PROYECTOS
 Route::post('/projects', [ProjectsController::class, 'store']);

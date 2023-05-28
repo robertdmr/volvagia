@@ -26,7 +26,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $leads = Lead::where('user_id', auth()->user()->id)->get();
+        $leads = Lead::where('user_id', auth()->user()->id)->with('project')->get();
+        // return $leads;
         if(auth()->user()->isAdmin()){
             $leads = Lead::all();
         }
