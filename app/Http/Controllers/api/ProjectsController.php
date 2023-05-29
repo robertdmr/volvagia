@@ -27,4 +27,23 @@ class ProjectsController extends Controller
         return response()->json(['message' => 'ok', 'project' => $project]);
 
     }
+
+    public function update(Request $request, Projects $project){
+        $validate = $request->validate([
+            'nombre' => 'required',
+            'descripcion' => 'required',
+        ]);
+
+        if (!$validate){
+            return $validate;
+        }
+
+        $project->update($request->only('nombre', 'descripcion'));
+        return response()->json(['message' => 'ok', 'project' => $project]);
+    }
+
+    public function destroy(Projects $project){
+        $project->delete();
+        return response()->json(['message' => 'ok']);
+    }
 }
