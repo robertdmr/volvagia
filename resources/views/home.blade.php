@@ -165,7 +165,7 @@
                             </div>
                             <div class="col-4">
                                 <label for="fecha">Fecha</label>
-                                <input type="date" class="form-control" name="fecha" id="fecha">
+                                <input type="date" class="form-control" name="fecha" id="fecha" value="{{ date("Y-m-d") }}">
                             </div>
                         </div>
 
