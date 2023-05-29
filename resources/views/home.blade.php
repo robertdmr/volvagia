@@ -155,12 +155,12 @@
                         @CSRF
                         <div class="row my-2">
                             <div class="col-4">
-                                <label for="c">C</label>
+                                <label for="c">C (Situación)</label>
                                 <input type="text" class="form-control" name="c" id="c">
                                 <input type="hidden" name="id" id="id">
                             </div>
                             <div class="col-4">
-                                <label for="as">As</label>
+                                <label for="as">As (Asesor)</label>
                                 <input type="text" class="form-control" name="as" id="as">
                             </div>
                             <div class="col-4">
@@ -171,7 +171,7 @@
 
                         <div class="row my-2">
                             <div class="col-6">
-                                <label for="ajetreo">Ajetreo</label>
+                                <label for="ajetreo">Ajetreo (Categoría)</label>
                                 <input type="text" class="form-control" id="ajetreo" name="ajetreo">
                             </div>
                             <div class="col-6">
@@ -223,25 +223,17 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-2">
-                                <label for="x">X</label>
+                            <div class="col-4">
+                                <label for="x">X (Importancia)</label>
                                 <input type="text" class="form-control" id="X" name="X">
                             </div>
-                            <div class="col-2">
-                                <label for="e">E</label>
+                            <div class="col-4">
+                                <label for="e">E (Pendiente/Ok)</label>
                                 <input type="text" class="form-control" id="e" name="e">
                             </div>
-                            <div class="col-2">
+                            <div class="col-4">
                                 <label for="f">F</label>
                                 <input type="text" class="form-control" id="f" name="f">
-                            </div>
-                            <div class="col-3">
-                                <label for="blanco">Blanco</label>
-                                <input type="text" class="form-control" id="blanco" name="blanco">
-                            </div>
-                            <div class="col-3">
-                                <label for="mes">Mes</label>
-                                <input type="text" class="form-control" id="mes" name="mes">
                             </div>
                         </div>
                         <hr>

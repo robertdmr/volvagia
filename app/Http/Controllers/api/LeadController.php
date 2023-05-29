@@ -17,7 +17,7 @@ class LeadController extends Controller
     {
         // return $request->all();
 
-        if(Auth::user()->role_id == "user"){
+        if(Auth::user()->role == "user"){
             $request->merge(['user_id' => Auth::user()->id]);
         }
 
