@@ -32,7 +32,15 @@ class HomeController extends Controller
             $leads = Lead::all();
         }
         $projects = Projects::all();
+        $situaciones = \App\Models\Situacion::all();
+        $ajetreos = \App\Models\Ajetreo::all();
+        $asesores = \App\Models\Asesores::all();
         $users = User::all();
-        return view('home', compact('leads', 'projects','users'));
+        return view('home', compact('leads', 'projects','users', 'situaciones', 'ajetreos', 'asesores'));
+    }
+
+    public function utils()
+    {
+        return view('utils');
     }
 }

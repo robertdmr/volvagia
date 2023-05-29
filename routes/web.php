@@ -37,6 +37,9 @@ Route::group(
         // PROYECTOS
         Route::get('/projects', [ProjectsController::class, 'index'])->name('projects.index');
 
+        // Utiles
+        Route::get('/utils', [HomeController::class, 'utils'])->name('utils');
+
 
     }
 );

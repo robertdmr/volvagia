@@ -27,6 +27,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('projects.index') }}">Proyectos</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('utils') }}">Utiles</a>
+                    </li>
                 </ul>
                 <li class="nav-item dropdown">
                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"

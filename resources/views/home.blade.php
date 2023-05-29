@@ -156,12 +156,22 @@
                         <div class="row my-2">
                             <div class="col-4">
                                 <label for="c">C (Situación)</label>
-                                <input type="text" class="form-control" name="c" id="c">
+                                <select name="c" id="c" class="form-select">
+                                    <option value="">Seleccionar</option>
+                                    @foreach ($situaciones as $situacion)
+                                        <option value="{{ $situacion->nombre }}">{{ $situacion->nombre }}</option>
+                                    @endforeach
+                                </select>
                                 <input type="hidden" name="id" id="id">
                             </div>
                             <div class="col-4">
                                 <label for="as">As (Asesor)</label>
-                                <input type="text" class="form-control" name="as" id="as">
+                                <select name="as" id="as" class="form-select">
+                                    <option value="">Seleccionar</option>
+                                    @foreach ($asesores as $asesor)
+                                        <option value="{{ $asesor->nombre }}">{{ $asesor->nombre }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="col-4">
                                 <label for="fecha">Fecha</label>
@@ -172,7 +182,12 @@
                         <div class="row my-2">
                             <div class="col-6">
                                 <label for="ajetreo">Ajetreo (Categoría)</label>
-                                <input type="text" class="form-control" id="ajetreo" name="ajetreo">
+                                <select name="ajetreo" id="ajetreo" class="form-select">
+                                    <option value="">Seleccionar</option>
+                                    @foreach ($ajetreos as $ajetreo)
+                                        <option value="{{ $ajetreo->nombre }}">{{ $ajetreo->nombre }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="col-6">
                                 <label for="project_id">Proyecto
