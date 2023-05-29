@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\Lead;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LeadController extends Controller
 {
@@ -16,11 +17,14 @@ class LeadController extends Controller
     {
         // return $request->all();
 
+        if(Auth::user()->role_id == "user"){
+            $request->merge(['user_id' => Auth::user()->id]);
+        }
+
         $validate = $request->validate([
             'ajetreo' => 'required',
             'as' => 'required',
             'fecha' => 'required',
-            'project_id' => 'required',
         ]);
 
         if (!$validate){
