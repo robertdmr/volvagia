@@ -34,5 +34,7 @@ Route::delete('/leads/{lead}', [LeadController::class, 'destroy']);
 Route::post('/lead/{lead}', [LeadController::class, 'updateColumn']);
 
 // PROYECTOS
+
 Route::post('/projects', [ProjectsController::class, 'store']);
+Route::put('/projects/{project}', [ProjectsController::class, 'update']);
 Route::get('/projects', [ProjectsController::class, 'index']);

@@ -27,7 +27,7 @@
 </head>
 
 <body>
-    <div id="app">
+    <div id="app" class="pb-4">
         @auth
             @include('layouts.navbar')
         @endauth

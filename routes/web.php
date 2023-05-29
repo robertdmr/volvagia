@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -33,6 +34,8 @@ Route::group(
         // USUARIOS
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
+        // PROYECTOS
+        Route::get('/projects', [ProjectsController::class, 'index'])->name('projects.index');
 
 
     }

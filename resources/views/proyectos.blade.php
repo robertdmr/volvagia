@@ -4,7 +4,7 @@
     <div class="container pt-3">
         <div class="row py-3 justify-content-center">
             <div class="col">
-                <h2>Usuarios</h2>
+                <h2>Proyectos</h2>
             </div>
         </div>
         <div class="row">
@@ -22,27 +22,21 @@
                             <thead>
                                 <tr>
                                     <th>Acc</th>
-                                    <th>Cod</th>
                                     <th>Nombre</th>
-                                    <th>Perfil</th>
                                     <th>Elim</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($users as $user)
+                                @foreach ($projects as $project)
                                     <tr>
                                         <td>
                                             <button class="btn btn-sm btn-secondary"
-                                                onclick="openDatos({{ $user }})"><i
+                                                onclick="openDatos({{ $project }})"><i
                                                     class="fas fa-pencil"></i></button>
                                         </td>
-                                        <td>{{ $user->id }}</td>
-                                        <td>{{ $user->name }}</td>
-                                        <td><span
-                                                class="badge {{ $user->role == 'user' ? 'bg-success' : 'bg-primary' }}">{{ $user->role }}</span>
-                                        </td>
+                                        <td>{{ $project->nombre }}</td>
                                         <td><button class="btn text-danger fw-bold"
-                                                onclick="fnEliminar({{ $user->id }})">X</button></td>
+                                                onclick="fnEliminar({{ $project->id }})">X</button></td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -53,39 +47,34 @@
         </div>
     </div>
     {{-- modal --}}
-    <div class="modal fade" tabindex="-1" id="datosModal">
-        <div class="modal-dialog">
+    <div class="modal fade" id="datosModal" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"><span id="action">Agregar</span> Usuario</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title"><span id="action">Agregar</span> Proyecto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#datosProyectos"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="frmDatos" method="POST">
-                        <div class="my-2">
-                            <label for="name" class="form-label">Nombre</label>
-                            <input type="text" name="name" id="name" class="form-control">
-                            <input type="hidden" name="id" id="id">
+                    <form action="{{ url('/project') }}" id="frmPoyecto" method="POST">
+                        @CSRF
+                        <div class="row">
+                            <div class="col">
+                                <label for="nombre">Nombre</label>
+                                <input type="text" name="nombre" id="nombre" class="form-control">
+                            </div>
                         </div>
-                        <div class="my-2">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="text" name="email" id="email" class="form-control">
+                        <div class="row">
+                            <div class="col">
+                                <label for="descripcion">Descripcion</label>
+                                <textarea name="descripcion" id="descripcion" cols="30" rows="3" class="form-control"></textarea>
+                            </div>
                         </div>
-                        <div class="my-2">
-                            <label for="role" class="form-label">Perfil</label>
-                            <select name="role" id="role" class="form-select">
-                                <option value="admin">Administrador</option>
-                                <option value="user" selected>Usuario</option>
-                            </select>
-                        </div>
-                        <h2>Seguridad</h2>
-                        <div class="my-2">
-                            <label for="password" class="form-label">Contraseña</label>
-                            <input type="password" name="password" id="password" class="form-control">
-                        </div>
-                        <div class="my-2 text-end">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        <hr>
+                        <div class="row">
+                            <div class="col text-end">
+                                <button class="btn btn-primary">Guardar</button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -106,21 +95,19 @@
             });
         });
 
-        function openDatos(user) {
-            $('form#frmDatos')[0].reset();
+        function openDatos(project) {
+            $('form#frmPoyecto')[0].reset();
             $('#datosModal').modal('show');
             $("#action").text("Editar");
-            $('#id').val(user.id);
-            $('#name').val(user.name);
-            $('#email').val(user.email);
-            $('#role').val(user.role);
+            $('#nombre').val(project.nombre);
+            $('#descripcion').val(project.descripcion);
         }
 
         $('form').on('submit', function(e) {
             e.preventDefault();
             var form = $(this);
             var data = form.serialize();
-            var url = "{{ url('/api/users') }}";
+            var url = "{{ url('/api/projects') }}";
             var xmethod = "POST";
             if ($("#action").text() == "Editar") {
                 xmethod = "PUT";
@@ -155,8 +142,8 @@
         });
 
         function openModalDatos() {
-            $('form#frmDatos')[0].reset();
-            $("form").attr("action", "{{ url('users') }}");
+            $('form#frmPoyecto')[0].reset();
+            $("form").attr("action", "{{ url('api/projects') }}");
             $('#datosModal').modal('show');
             $('#action').text("Agregar");
         }
@@ -164,7 +151,7 @@
         function fnEliminar(id) {
             if (confirm("Desea eliminar este registro?") == true) {
                 $.ajax({
-                    url: "{{ url('/api/users') }}" + "/" + id,
+                    url: "{{ url('/api/projects') }}" + "/" + id,
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
