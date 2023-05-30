@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Situacion;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,14 +13,22 @@ class SituacionSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Situacion::create([
-            'nombre' => 'PR'
-        ],[
-            'nombre' => 'SI'
-        ],[
-            'nombre' => 'VI'
-        ],[
-            'nombre' => 'NO'
-        ]);
+        $items = [
+            [
+                'nombre' => 'PR'
+            ],
+            [
+                'nombre' => 'SI'
+            ],
+            [
+                'nombre' => 'VI'
+            ],
+            [
+                'nombre' => 'NO'
+            ]
+        ];
+        foreach ($items as $item) {
+            Situacion::create($item);
+        }
     }
 }

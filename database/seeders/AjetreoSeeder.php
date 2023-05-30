@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Ajetreo;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,14 +13,19 @@ class AjetreoSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Ajetreo::create([
-            'nombre' => '1-ENTIBIO'
-        ],[
-            'nombre' => 'A-GESTION'
-        ],[
-            'nombre' => 'B-LLAMADA DE CERO'
-        ],[
-            'nombre' => 'C-INTENTANDO CONTACTAR'
-        ]);
+        $items = [
+            [
+                'nombre' => '1-ENTIBIO'
+            ],[
+                'nombre' => 'A-GESTION'
+            ],[
+                'nombre' => 'B-LLAMADA DE CERO'
+            ],[
+                'nombre' => 'C-INTENTANDO CONTACTAR'
+            ]
+        ];
+        foreach ($items as $item) {
+            Ajetreo::create($item);
+        }
     }
 }

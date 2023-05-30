@@ -13,10 +13,16 @@ class AsesorSeeder extends Seeder
      */
     public function run(): void
     {
-        Asesores::create([
-            'nombre' => 'AM'
-        ],[
-            'nombre' => 'RA'
-        ]);
+        $items = [
+            [
+                'nombre' => 'AM'
+            ],
+            [
+                'nombre' => 'RA'
+            ]
+        ];
+        foreach ($items as $item) {
+            Asesores::create($item);
+        }
     }
 }
