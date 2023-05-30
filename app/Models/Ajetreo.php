@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Ajetreo extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'nombre'
+    ];
 }

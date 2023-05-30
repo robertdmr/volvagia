@@ -46,18 +46,21 @@ Route::delete('/projects/{project}', [ProjectsController::class, 'destroy']);
 // Utiles
 // situacion
 Route::get('/situacion', [SituacionController::class, 'index']);
+Route::get('/situacion/{situacion}', [SituacionController::class, 'show']);
 Route::post('/situacion', [SituacionController::class, 'store']);
-Route::put('/situacion', [SituacionController::class, 'update']);
-Route::delete('/situacion', [SituacionController::class, 'destroy']);
+Route::put('/situacion/{situacion}', [SituacionController::class, 'update']);
+Route::delete('/situacion/{situacion}', [SituacionController::class, 'destroy']);
 
 // Ajetreo
 Route::get('/ajetreo', [AjetreoController::class, 'index']);
+Route::get('/ajetreo/{ajetreo}', [AjetreoController::class, 'show']);
 Route::post('/ajetreo', [AjetreoController::class, 'store']);
-Route::put('/ajetreo', [AjetreoController::class, 'update']);
-Route::delete('/ajetreo', [AjetreoController::class, 'destroy']);
+Route::put('/ajetreo/{ajetreo}', [AjetreoController::class, 'update']);
+Route::delete('/ajetreo/{ajetreo}', [AjetreoController::class, 'destroy']);
 
 // Asesores
 Route::get('/asesores', [AsesoresController::class, 'index']);
+Route::get('/asesores/{asesor}', [AsesoresController::class, 'show']);
 Route::post('/asesores', [AsesoresController::class, 'store']);
-Route::put('/asesores', [AsesoresController::class, 'update']);
-Route::delete('/asesores', [AsesoresController::class, 'destroy']);
+Route::put('/asesores/{asesor}', [AsesoresController::class, 'update']);
+Route::delete('/asesores/{asesor}', [AsesoresController::class, 'destroy']);

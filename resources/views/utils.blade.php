@@ -95,7 +95,7 @@
                 </div>
                 <div class="modal-body">
                     <form id="frmDatos" method="POST">
-
+                        <div id="formBody"></div>
                         <div class="my-2 text-end">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                             <button type="submit" class="btn btn-primary">Guardar</button>
@@ -119,9 +119,32 @@
         function addSituacion(){
             $("#action").html("Agregar");
             $("#titulo").html("Situación");
-            $("#frmDatos").attr("action", "{{ url('situacion') }}");
+            $("#frmDatos").attr("action", "{{ url('api/situacion') }}");
             $("#frmDatos").attr("method", "POST");
+            $("#datosModal div#formBody").html("");
+            $("#frmDatos div#formBody").append("<div class='mb-3'><label for='nombre' class='form-label'>Nombre</label><input type='text' class='form-control' name='nombre' id='nombre'></div>");
+            $("#datosModal").modal("show");
         }
+        function addAjetreo(){
+            $("#action").html("Agregar");
+            $("#titulo").html("Ajetreo");
+            $("#frmDatos").attr("action", "{{ url('api/ajetreo') }}");
+            $("#frmDatos").attr("method", "POST");
+            $("#datosModal div#formBody").html("");
+            $("#frmDatos div#formBody").append("<div class='mb-3'><label for='nombre' class='form-label'>Nombre</label><input type='text' class='form-control' name='nombre' id='nombre'></div>");
+            $("#datosModal").modal("show");
+        }
+
+        function addAsesores(){
+            $("#action").html("Agregar");
+            $("#titulo").html("Asesores");
+            $("#frmDatos").attr("action", "{{ url('api/asesores') }}");
+            $("#frmDatos").attr("method", "POST");
+            $("#datosModal div#formBody").html("");
+            $("#frmDatos div#formBody").append("<div class='mb-3'><label for='nombre' class='form-label'>Nombre</label><input type='text' class='form-control' name='nombre' id='nombre'></div>");
+            $("#datosModal").modal("show");
+        }
+
         function listarSituacion(){
             var table = $("#listadoSituacion tbody");
             var datos = $.ajax({
@@ -169,8 +192,130 @@
             })
         }
 
+        function editSituacion(id){
+            $("#action").html("Editar");
+            $("#titulo").html("Situación");
+            $("#frmDatos").attr("action", "{{ url('api/situacion') }}/"+id);
+            $("#frmDatos").attr("method", "PUT");
+            var datos = $.ajax({
+                url: "{{ url('/api/situacion') }}/"+id,
+                method: "GET",
+                dataType: "json",
+                async: false,
+                success: function(data){
+                    $("#datosModal div#formBody").html("");
+                    $("#frmDatos div#formBody").append("<input type='hidden' name='_method' value='PUT'>");
+                    $("#frmDatos div#formBody").append("<input type='hidden' name='id' value='"+data.id+"'>");
+                    $("#frmDatos div#formBody").append("<div class='mb-3'><label for='nombre' class='form-label'>Nombre</label><input type='text' class='form-control' name='nombre' id='nombre' value='"+data.nombre+"'></div>");
+                    $("#datosModal").modal("show");
+                }
+            })
+        }
+        function editAjetreo(id){
+            $("#action").html("Editar");
+            $("#titulo").html("Ajetreo");
+            $("#frmDatos").attr("action", "{{ url('api/ajetreo') }}/"+id);
+            $("#frmDatos").attr("method", "PUT");
+            var datos = $.ajax({
+                url: "{{ url('/api/ajetreo') }}/"+id,
+                method: "GET",
+                dataType: "json",
+                async: false,
+                success: function(data){
+                    $("#datosModal div#formBody").html("");
+                    $("#frmDatos div#formBody").append("<input type='hidden' name='_method' value='PUT'>");
+                    $("#frmDatos div#formBody").append("<input type='hidden' name='id' value='"+data.id+"'>");
+                    $("#frmDatos div#formBody").append("<div class='mb-3'><label for='nombre' class='form-label'>Nombre</label><input type='text' class='form-control' name='nombre' id='nombre' value='"+data.nombre+"'></div>");
+                    $("#datosModal").modal("show");
+                }
+            })
+        }
+        function editAsesor(id){
+            $("#action").html("Editar");
+            $("#titulo").html("Asesor");
+            $("#frmDatos").attr("action", "{{ url('api/asesores') }}/"+id);
+            $("#frmDatos").attr("method", "PUT");
+            var datos = $.ajax({
+                url: "{{ url('/api/asesores') }}/"+id,
+                method: "GET",
+                dataType: "json",
+                async: false,
+                success: function(data){
+                    $("#datosModal div#formBody").html("");
+                    $("#frmDatos div#formBody").append("<input type='hidden' name='_method' value='PUT'>");
+                    $("#frmDatos div#formBody").append("<input type='hidden' name='id' value='"+data.id+"'>");
+                    $("#frmDatos div#formBody").append("<div class='mb-3'><label for='nombre' class='form-label'>Nombre</label><input type='text' class='form-control' name='nombre' id='nombre' value='"+data.nombre+"'></div>");
+                    $("#datosModal").modal("show");
+                }
+            })
+        }
 
+        function deleteSituacion(id){
+            if(confirm("¿Está seguro de eliminar el registro?")){
+                var datos = $.ajax({
+                    url: "{{ url('/api/situacion') }}/"+id,
+                    method: "DELETE",
+                    dataType: "json",
+                    async: false,
+                    success: function(data){
+                        listarSituacion();
+                    }
+                })
+            }
+        }
 
+        function deleteAjetreo(id){
+            if(confirm("¿Está seguro de eliminar el registro?")){
+                var datos = $.ajax({
+                    url: "{{ url('/api/ajetreo') }}/"+id,
+                    method: "DELETE",
+                    dataType: "json",
+                    async: false,
+                    success: function(data){
+                        listadoAjetreos();
+                    }
+                })
+            }
+        }
+
+        function deleteAsesor(id){
+            if(confirm("¿Está seguro de eliminar el registro?")){
+                var datos = $.ajax({
+                    url: "{{ url('/api/asesores') }}/"+id,
+                    method: "DELETE",
+                    dataType: "json",
+                    async: false,
+                    success: function(data){
+                        listadoAsesores();
+                    }
+                })
+            }
+        }
+
+        $("form#frmDatos").on('submit', function(e){
+            e.preventDefault();
+            var url = $(this).attr("action");
+            var action = $("#titulo").html().toLowerCase();
+            var datos = $(this).serialize();
+            var method = $(this).attr("method");
+            $.ajax({
+                url: url,
+                method: method,
+                data: datos,
+                dataType: "json",
+                success: function(data){
+                    $("#datosModal").modal("hide");
+                    if(action=="situación"){
+                        listarSituacion();
+                    }else if(action=="asesores"){
+                        listadoAsesores();
+                    }else if(action=="ajetreo"){
+                        listadoAjetreos();
+                    }
+                }
+            });
+
+        });
 
 
     </script>

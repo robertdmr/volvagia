@@ -13,4 +13,27 @@ class AsesoresController extends Controller
         $asesores = Asesores::all();
         return response()->json($asesores);
     }
+
+    public function show(Asesores $asesor)
+    {
+        return response()->json($asesor);
+    }
+
+    public function update(Request $request, Asesores $asesor)
+    {
+        $asesor->update($request->all());
+        return response()->json($asesor);
+    }
+
+    public function store(Request $request)
+    {
+        $asesores = Asesores::create($request->all());
+        return response()->json($asesores);
+    }
+
+    public function destroy(Asesores $asesor)
+    {
+        $asesor->delete();
+        return response()->json($asesor);
+    }
 }
