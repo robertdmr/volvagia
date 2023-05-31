@@ -18,9 +18,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('home') }}">Inicio</a>
                     </li>
+                    @if(auth()->user()->role=='admin')
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('users.index') }}">Usuarios</a>
                     </li>
+                    @endif
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('projects.index') }}">Proyectos</a>
                     </li>
