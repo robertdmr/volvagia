@@ -21,8 +21,8 @@
                                 <div class="col">
                                     <label for="email" class="col-form-label">{{ __('E-Mail Address') }}</label>
                                     <input id="email" type="email"
-                                        class="form-control @error('email') is-invalid @enderror" name="email"
-                                        value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                    class="form-control @error('email') is-invalid @enderror" name="email"
+                                    value="{{ old('email') }}" required autocomplete="email" autofocus>
 
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">
@@ -35,10 +35,12 @@
                             <div class="row mb-3">
                                 <div class="col">
                                     <label for="password" class="col-form-label">{{ __('Password') }}</label>
-                                    <input id="password" type="password"
+                                    <div class="input-group">
+                                        <input id="password" type="password"
                                         class="form-control @error('password') is-invalid @enderror" name="password"
                                         required autocomplete="current-password">
-
+                                        <button class="btn btn-outline-secondary" type="button" id="button-addon1" onclick="showPass()"><i class="fas fa-eye"></i></button>
+                                    </div>
                                     @error('password')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -85,4 +87,19 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script>
+        function showPass(){
+            var x = document.getElementById("password");
+            if (x.type === "password") {
+                x.type = "text";
+                document.getElementById("button-addon1").innerHTML = '<i class="fas fa-eye-slash"></i>';
+            } else {
+                x.type = "password";
+                document.getElementById("button-addon1").innerHTML = '<i class="fas fa-eye"></i>';
+            }
+        }
+    </script>
 @endsection

@@ -28,7 +28,7 @@ class HomeController extends Controller
     {
         $leads = Lead::where('user_id', auth()->user()->id)->with('project')->get();
         // return $leads;
-        if(auth()->user()->isAdmin()){
+        if(auth()->user()->role=="admin"){
             $leads = Lead::all();
         }
         $projects = Projects::all();

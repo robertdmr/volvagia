@@ -21,6 +21,9 @@
             z-index: 10000;
             display: none;
         }
+        #listado_filter{
+            margin-bottom: 15px !important;
+        }
     </style>
 @endsection
 
@@ -33,30 +36,10 @@
     </div>
 
     <div class="container-fluid pt-3">
-        <div class="row py-3 justify-content-center">
-            <div class="col-11 col-md-4">
-                <div class="card bg-secondary shadow my-1">
-                    <div class="card-body text-white">
-                        <h5>PENDIENTES</h5>
-                        <span class="h3">0</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-11 col-md-4">
-                <div class="card bg-secondary shadow my-1">
-                    <div class="card-body text-white">
-                        <h5>PROYECTOS</h5>
-                        <span class="h3">0</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-11 col-md-4">
-                <div class="card bg-secondary shadow my-1">
-                    <div class="card-body text-white">
-                        <h5>PARA HOY</h5>
-                        <span class="h3">0</span>
-                    </div>
-                </div>
+        <div class="row">
+            <div class="col">
+                <h2>Inicio</h2>
+                <hr>
             </div>
         </div>
         <div class="row">
@@ -70,7 +53,7 @@
                     </div>
 
                     <div class="card-body table-responsive">
-                        <table id="listado" class="display nowrap editable" style="width:100%">
+                        <table id="listado" class="display" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>Acc</th>
@@ -79,14 +62,16 @@
                                     <th>AS</th>
                                     <th>FECHA</th>
                                     <th>REFERENTE</th>
-                                    <th>PROYECTOS</th>
+                                    <th>PROYECTO</th>
                                     <th>NOMBRE</th>
                                     <th>TELEFONO</th>
                                     <th>X</th>
                                     <th>COMENTARIO</th>
                                     <th>E</th>
                                     <th>F</th>
+                                    @if($user = Auth::user()->role=="admin")
                                     <th>Elim</th>
+                                    @endif
                                     <th class="d-none"></th>
                                 </tr>
                             </thead>
@@ -128,8 +113,10 @@
                                         </td>
                                         <td>{{ $lead->e }}</td>
                                         <td>{{ $lead->f }}</td>
+                                        @if($user = Auth::user()->role=="admin")
                                         <td><i class="fas fa-close text-danger" role="button"
                                                 onclick="fnEliminar({{ $lead->id }})"></i></td>
+                                        @endif
                                         <td class="d-none">{{ $lead->id }}</td>
                                     </tr>
                                 @endforeach
@@ -152,7 +139,7 @@
                 </div>
                 <div class="modal-body">
                     <form id="frmDatos" method="POST">
-                        @CSRF
+                        @csrf
                         <div class="row my-2">
                             <div class="col-4">
                                 <label for="c">C (Situación)</label>
@@ -175,7 +162,8 @@
                             </div>
                             <div class="col-4">
                                 <label for="fecha">Fecha</label>
-                                <input type="date" class="form-control" name="fecha" id="fecha" value="{{ date("Y-m-d") }}">
+                                <input type="date" class="form-control" name="fecha" id="fecha"
+                                    value="{{ date('Y-m-d') }}">
                             </div>
                         </div>
 
@@ -238,17 +226,13 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4">
+                            <div class="col-6">
                                 <label for="x">X (Importancia)</label>
                                 <input type="text" class="form-control" id="X" name="X">
                             </div>
-                            <div class="col-4">
+                            <div class="col-6">
                                 <label for="e">E (Pendiente/Ok)</label>
                                 <input type="text" class="form-control" id="e" name="e">
-                            </div>
-                            <div class="col-4">
-                                <label for="f">F</label>
-                                <input type="text" class="form-control" id="f" name="f">
                             </div>
                         </div>
                         <hr>
@@ -302,13 +286,20 @@
     <script>
         $(document).ready(function() {
             var tabla = $('#listado').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'excel', 'pdf'
+                ],
+                colResize: {
+                    tableWidthFixed: false,
+                    isEnabled: true,
+                },
                 language: {
                     'url': '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
                 },
                 scrollX: true,
                 select: true,
             });
-
         });
 
         function openDatos(id) {
@@ -368,7 +359,6 @@
                 xmethod = "PUT";
                 url += "/" + $('#id').val();
             }
-            console.log(xmethod)
             $.ajax({
                 url: url,
                 headers: {
@@ -376,11 +366,15 @@
                 },
                 type: xmethod,
                 data: data,
+                beforeSend:function(){
+                    mostrarLoader();
+                },
                 success: function(response) {
                     if (response.message == "ok") {
                         location.reload();
                     }
                     console.log(response)
+                    ocultarLoader();
                 },
                 error: function(error) {
                     const errors = error.responseJSON.errors;
@@ -391,6 +385,7 @@
                         });
                         alert(msg)
                     }
+                    ocultarLoader();
                 }
             });
         });

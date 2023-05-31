@@ -15,8 +15,8 @@ class LeadController extends Controller
 
     public function store(Request $request)
     {
-        // return $request->all();
 
+        // return auth()->user();
         if(Auth::user()->role == "user"){
             $request->merge(['user_id' => Auth::user()->id]);
         }

@@ -20,10 +20,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+Route::group(['middleware'=>'auth:sanctum'],function(){
 // USUARIOS
 Route::post('/users', [UserController::class, 'store']);
 Route::put('/users/{user}', [UserController::class, 'update']);
@@ -64,3 +64,7 @@ Route::get('/asesores/{asesor}', [AsesoresController::class, 'show']);
 Route::post('/asesores', [AsesoresController::class, 'store']);
 Route::put('/asesores/{asesor}', [AsesoresController::class, 'update']);
 Route::delete('/asesores/{asesor}', [AsesoresController::class, 'destroy']);
+});
+
+
+
