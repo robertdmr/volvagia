@@ -1,9 +1,6 @@
 @extends('layouts.app')
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('plugins/resize/jquery.dataTables.colResize.css') }}">
-    <script src="{{ asset('plugins/resize/jquery.dataTables.colResize.js') }}"></script>
-
     <style>
         #backdrop {
             position: fixed;
@@ -31,23 +28,21 @@
 
         /* RESIZE */
         .table th {
-            position: relative;
-        }
-
-        .resizer {
-            /* Displayed at the right side of column */
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 5px;
-            cursor: col-resize;
-            user-select: none;
-        }
-
-        .resizer:hover,
-        .resizing {
-            border-right: 2px solid blue;
-        }
+    position: relative;
+}
+.resizer {
+    /* Displayed at the right side of column */
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 5px;
+    cursor: col-resize;
+    user-select: none;
+}
+.resizer:hover,
+.resizing {
+    border-right: 2px solid blue;
+}
     </style>
 @endsection
 
@@ -308,56 +303,20 @@
 
 @section('scripts')
     <script>
-        var widths = localStorage.getItem('widths')!=null ? JSON.parse(localStorage.getItem('widths')): [];
-        var colwidths = [];
-        widths.forEach((element, index) => {
-            colwidths.push({
-                "width": element,
-                "targets": index
-            });
-        });
-        var options = {
-            isEnabled: true,
-            saveState: true,
-            hoverClass: 'dt-colresizable-hover',
-            hasBoundCheck: true,
-            minBoundClass: 'dt-colresizable-bound-min',
-            maxBoundClass: 'dt-colresizable-bound-max',
-            isResizable: function(column) {
-                return true;
-            },
-            onResizeStart: function(column, columns) {
-                // console.log('onResizeStart', column, columns);
-            },
-            onResize: function(column) {},
-            onResizeEnd: function(column, columns) {
-                console.log(column)
-                widths = [];
-                columns.forEach(function(column) {
-                    widths.push(column.width);
-                });
-                localStorage.setItem('widths', JSON.stringify(widths));
-            },
-            getMinWidthOf: function($thNode) {
-
-            },
-            stateSaveCallback: function(settings, data) {},
-            stateLoadCallback: function(settings) {
-                console.log(settings)
-            }
-        }
         $(document).ready(function() {
             var tabla = $('#listado').DataTable({
-                columnDefs: colwidths,
-                paging: false,
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'excel', 'pdf'
+                ],
+
                 language: {
                     'url': '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
                 },
                 scrollX: true,
                 select: true,
-                colResize: options
             });
-
+  |
         });
 
         function openDatos(id) {
