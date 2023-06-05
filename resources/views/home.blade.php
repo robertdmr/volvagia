@@ -34,6 +34,13 @@
             position: relative;
         }
 
+        td {
+            max-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
         .resizer {
             /* Displayed at the right side of column */
             position: absolute;
@@ -308,7 +315,7 @@
 
 @section('scripts')
     <script>
-        var widths = localStorage.getItem('widths')!=null ? JSON.parse(localStorage.getItem('widths')): [];
+        var widths = localStorage.getItem('widths') != null ? JSON.parse(localStorage.getItem('widths')) : [];
         var colwidths = [];
         widths.forEach((element, index) => {
             colwidths.push({
