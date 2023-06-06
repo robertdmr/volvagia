@@ -26,11 +26,21 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $leads = Lead::where('user_id', auth()->user()->id)->with('project')->get();
-        // return $leads;
-        if(auth()->user()->role=="admin"){
-            $leads = Lead::all();
-        }
+        $search = request('search');
+        $leads = Lead::query()
+                ->when(request('search'), function($query) use ($search) {
+                $query->where('nombre', 'like', '%' . request('search') . '%')
+                ->orWhere('ajetreo', 'like', '%' . request('search') . '%')
+                ->orWhere('fecha', 'like', '%' . request('search') . '%')
+                ->orWhere('referente', 'like', '%' . request('search') . '%')
+                ->orWhere('telefono', 'like', '%' . request('search') . '%')
+                ->orWhere('comentario', 'like', '%' . request('search') . '%');
+            })
+            ->when(auth()->user()->role != "admin", function($query) {
+                $query->where('user_id', auth()->user()->id);
+            })
+            ->paginate(100);
+
         $projects = Projects::all();
         $situaciones = \App\Models\Situacion::all();
         $ajetreos = \App\Models\Ajetreo::all();

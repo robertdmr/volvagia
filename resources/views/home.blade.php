@@ -25,6 +25,10 @@
             display: none;
         }
 
+        .dataTables_filter input {
+            width: 100%;
+        }
+
         #listado_filter {
             margin-bottom: 15px !important;
         }
@@ -78,9 +82,7 @@
                 <div class="card">
                     <div class="card-header">
                         {{ __('Dashboard') }}
-                        <button class="btn btn-sm btn-success float-end" onclick="openModalDatos()">
-                            <i class="fas fa-plus"></i>
-                        </button>
+
                     </div>
 
                     <div class="card-body table-responsive">
@@ -99,7 +101,6 @@
                                     <th>X</th>
                                     <th>COMENTARIO</th>
                                     <th>E</th>
-                                    <th>F</th>
                                     @if ($user = Auth::user()->role == 'admin')
                                         <th>Elim</th>
                                     @endif
@@ -143,7 +144,6 @@
                                             {{ $lead->comentario }}
                                         </td>
                                         <td>{{ $lead->e }}</td>
-                                        <td>{{ $lead->f }}</td>
                                         @if ($user = Auth::user()->role == 'admin')
                                             <td><i class="fas fa-close text-danger" role="button"
                                                     onclick="fnEliminar({{ $lead->id }})"></i></td>
@@ -357,6 +357,7 @@
             var tabla = $('#listado').DataTable({
                 columnDefs: colwidths,
                 paging: false,
+                searching:false,
                 language: {
                     'url': '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
                 },
