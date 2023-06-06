@@ -27,19 +27,21 @@ class HomeController extends Controller
     public function index()
     {
         $search = request('search');
-        $leads = Lead::query()
+        $leads = Lead::leftJoin('projects', 'projects.id', '=', 'leads.project_id')
                 ->when(request('search'), function($query) use ($search) {
-                $query->where('nombre', 'like', '%' . request('search') . '%')
+                $query->where('leads.nombre', 'like', '%' . request('search') . '%')
                 ->orWhere('ajetreo', 'like', '%' . request('search') . '%')
                 ->orWhere('fecha', 'like', '%' . request('search') . '%')
-                ->orWhere('referente', 'like', '%' . request('search') . '%')
+                ->orWhere('projects.nombre', 'like', '%' . request('search') . '%')
                 ->orWhere('telefono', 'like', '%' . request('search') . '%')
+                ->orWhere('referente', 'like', '%' . request('search') . '%')
                 ->orWhere('comentario', 'like', '%' . request('search') . '%');
             })
             ->when(auth()->user()->role != "admin", function($query) {
                 $query->where('user_id', auth()->user()->id);
             })
-            ->paginate(100);
+            ->get();
+            // return $leads;
 
         $projects = Projects::all();
         $situaciones = \App\Models\Situacion::all();
