@@ -57,12 +57,7 @@
 </div>
 
 <div class="container-fluid pt-3">
-    <div class="row">
-        <div class="col">
-            <h2>Inicio</h2>
-            <hr>
-        </div>
-    </div>
+
     <div class="row">
         <div class="col">
             <div class="card">
@@ -73,7 +68,7 @@
                     </button>
                 </div>
 
-                <div class="card-body table-responsive">
+                <div class="card-body table-responsive table-sm">
                     <table id="listado" class="display table" style="width:100%">
                         <thead>
                             <tr>

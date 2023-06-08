@@ -10,7 +10,7 @@
 
         <div class="collapse navbar-collapse row" id="navbarSupportedContent" id="navbarScroll">
             <!-- Left Side Of Navbar -->
-            <div class="me-auto col-12 col-md-7 col-lg-8">
+            <div class="mx-auto col-12 col-md-4 col-lg-4">
                 <form action="{{ route('home') }}" method="get">
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Buscar" aria-label="Buscar" name="search" value="{{ request()->query('search') ?? "" }}"
@@ -21,7 +21,7 @@
             </div>
 
             <!-- Right Side Of Navbar -->
-            <ul class="navbar-nav ms-auto my-2 my-lg-0 col-12 col-md-5 col-lg-4" style="--bs-scroll-height: 100px;">
+            <ul class="navbar-nav justify-content-end my-2 my-lg-0 col-12 col-md-8 col-lg-8" style="--bs-scroll-height: 100px;">
                 <!-- Authentication Links -->
                 <ul class="nav justify-content-center justify-content-md-end justify-content-lg-end border-end">
 

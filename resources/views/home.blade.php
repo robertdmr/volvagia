@@ -73,20 +73,14 @@
     <div class="container-fluid pt-3">
         <div class="row">
             <div class="col">
-                <h2>Inicio</h2>
-                <hr>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
                 <div class="card">
                     <div class="card-header">
                         {{ __('Dashboard') }}
 
                     </div>
 
-                    <div class="card-body table-responsive">
-                        <table id="listado" class="display table" style="width:100%">
+                    <div class="card-body table-responsiv ">
+                        <table id="listado" class="display table  table-sm" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>Acc</th>
@@ -111,9 +105,9 @@
                                 @foreach ($leads as $lead)
                                     <tr>
                                         <td>
-                                            <button class="btn btn-sm btn-danger"
+                                            <span class="text-danger"
                                                 onclick="openDatos('{{ $lead->id }}')"><i
-                                                    class="fas fa-pencil"></i></button>
+                                                    class="fas fa-pencil" role="button"></i></span>
                                         </td>
                                         <td><span class="badge bg-warning">{{ $lead->c }}</span></td>
                                         <td>
@@ -356,13 +350,14 @@
         $(document).ready(function() {
             var tabla = $('#listado').DataTable({
                 columnDefs: colwidths,
-                paging: false,
                 searching:false,
                 language: {
                     'url': '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
                 },
                 scrollX: true,
+                paging: true,
                 select: true,
+                pageLength:100,
                 colResize: options
             });
 
