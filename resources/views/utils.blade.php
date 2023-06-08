@@ -100,6 +100,7 @@
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                             <button type="submit" class="btn btn-primary">Guardar</button>
                         </div>
+                        @csrf
                     </form>
                 </div>
             </div>
@@ -307,7 +308,7 @@
                     $("#datosModal").modal("hide");
                     if(action=="situación"){
                         listarSituacion();
-                    }else if(action=="asesores"){
+                    }else if(action=="asesor"){
                         listadoAsesores();
                     }else if(action=="ajetreo"){
                         listadoAjetreos();
