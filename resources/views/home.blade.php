@@ -308,8 +308,11 @@
 
 @section('scripts')
     <script>
-        // elimina el dato widths del localstorage
-        localStorage.removeItem("widths");
+        // elimina el dato widths del localstorage si existe witdhs
+        if (localStorage.getItem('widths')) {
+            localStorage.removeItem('widths');
+        }
+        var widths = []
         // var widths = localStorage.getItem('widths') != null ? JSON.parse(localStorage.getItem('widths')) : [];
         var colwidths = [];
         widths.forEach((element, index) => {
