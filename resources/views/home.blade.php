@@ -105,8 +105,7 @@
                                 @foreach ($leads as $lead)
                                     <tr>
                                         <td>
-                                            <span class="text-danger"
-                                                onclick="openDatos('{{ $lead->id }}')"><i
+                                            <span class="text-danger" onclick="openDatos('{{ $lead->id }}')"><i
                                                     class="fas fa-pencil" role="button"></i></span>
                                         </td>
                                         <td><span class="badge bg-warning">{{ $lead->c }}</span></td>
@@ -309,7 +308,9 @@
 
 @section('scripts')
     <script>
-        var widths = localStorage.getItem('widths') != null ? JSON.parse(localStorage.getItem('widths')) : [];
+        // elimina el dato widths del localstorage
+        localStorage.removeItem("widths");
+        // var widths = localStorage.getItem('widths') != null ? JSON.parse(localStorage.getItem('widths')) : [];
         var colwidths = [];
         widths.forEach((element, index) => {
             colwidths.push({
@@ -350,14 +351,14 @@
         $(document).ready(function() {
             var tabla = $('#listado').DataTable({
                 columnDefs: colwidths,
-                searching:false,
+                searching: false,
                 language: {
                     'url': '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
                 },
                 scrollX: true,
                 paging: true,
                 select: true,
-                pageLength:100,
+                pageLength: 100,
                 colResize: options
             });
 
