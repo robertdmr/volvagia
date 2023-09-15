@@ -295,6 +295,7 @@
     $(document).ready(function() {
         var tabla = $('#listado').DataTable({
             dom: 'Bfrtip',
+            stateSave: true,
             buttons: [
                 'copy', 'excel', 'pdf'
             ],
@@ -304,7 +305,13 @@
             },
             scrollX: true,
             select: true,
-        }); |
+            stateSaveCallback: function(settings,data) {
+                localStorage.setItem( 'DataTables_' + settings.sInstance, JSON.stringify(data))
+            },
+            stateLoadCallback: function(settings) {
+                return JSON.parse( localStorage.getItem( 'DataTables_' + settings.sInstance ))
+            },
+        });
     });
 
     function openDatos(id) {
