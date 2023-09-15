@@ -50,6 +50,7 @@
 
 @section('content')
 <div id="backdrop"></div>
+<h2>PAGINA DE BACKUP</h2>
 <div id="spinner">
     <div class="spinner-grow text-dark" role="status">
         <span class="visually-hidden">Loading...</span>
