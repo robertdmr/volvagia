@@ -53,11 +53,11 @@ class LeadImport implements ToModel, WithHeadingRow
 
         return new Lead([
             'c'         => $situacion->nombre,
-            'ajetreo'   => $ajetreo->name,
+            'ajetreo'   => $ajetreo->nombre,
             'as'        => $asesor->nombre,
             'fecha'     => $date,
             'referente' => $row['referente'],
-            'project_id'=> $proyecto->nombre,
+            'project_id'=> $proyecto->id,
             'nombre'    => $row['nombre'],
             'telefono'  => $row['telefono'],
             'X'         => $row['x'],
