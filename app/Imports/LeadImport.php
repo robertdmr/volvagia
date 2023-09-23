@@ -52,12 +52,12 @@ class LeadImport implements ToModel, WithHeadingRow
         $date = date('Y-m-d', strtotime($row['fecha']));
 
         return new Lead([
-            'c'         => $situacion->id,
-            'ajetreo'   => $ajetreo->id,
-            'as'        => $asesor->id,
+            'c'         => $situacion->nombre,
+            'ajetreo'   => $ajetreo->name,
+            'as'        => $asesor->nombre,
             'fecha'     => $date,
             'referente' => $row['referente'],
-            'project_id'=> $proyecto->id,
+            'project_id'=> $proyecto->nombre,
             'nombre'    => $row['nombre'],
             'telefono'  => $row['telefono'],
             'X'         => $row['x'],

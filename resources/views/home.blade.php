@@ -122,7 +122,7 @@
                                             {{ $lead->referente }}
                                         </td>
                                         <td>
-                                            <span class="fw-bold">{{ $lead->project->nombre ?? '' }}</span>
+                                            <span class="fw-bold">{{ $lead->proyecto ?? '' }}</span>
                                         </td>
                                         <td contenteditable='true'>
                                             {{ $lead->nombre }}

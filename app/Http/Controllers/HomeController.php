@@ -28,7 +28,7 @@ class HomeController extends Controller
     {
         $search = request('search');
         $leads = Lead::leftJoin('projects', 'projects.id', '=', 'leads.project_id')
-                ->select('leads.*','projects.nombre')
+                ->select('leads.*','projects.nombre as proyecto','users.name as usuario','asesores.nombre as asesor','ajetreos.nombre as ajetreo')
                 ->when(request('search'), function($query) use ($search) {
                 $query->where('leads.nombre', 'like', '%' . request('search') . '%')
                 ->orWhere('ajetreo', 'like', '%' . request('search') . '%')
