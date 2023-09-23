@@ -64,7 +64,7 @@ class LeadImport implements ToModel, WithHeadingRow
             'f'         => $row['f'],
             'mes'       => $row['mes'],
             'blanco'    => $row['blanco'],
-            'user_id'   => session()->user()->id
+            'user_id'   => 1
         ]);
     }
 }
