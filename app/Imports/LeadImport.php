@@ -21,10 +21,10 @@ class LeadImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
 
-        $situacion = Situacion::where('nombre', $row['situacion'])->first();
+        $situacion = Situacion::where('nombre', $row['c'])->first();
         if(!$situacion){
             $situacion = Situacion::create([
-                'nombre' => $row['situacion']
+                'nombre' => $row['c']
             ]);
         }
 
@@ -35,10 +35,10 @@ class LeadImport implements ToModel, WithHeadingRow
             ]);
         }
 
-        $asesor = Asesores::where('nombre', $row['asesor'])->first();
+        $asesor = Asesores::where('nombre', $row['as'])->first();
         if(!$asesor){
             $asesor = Asesores::create([
-                'nombre' => $row['asesor']
+                'nombre' => $row['as']
             ]);
         }
 
@@ -58,7 +58,7 @@ class LeadImport implements ToModel, WithHeadingRow
             'project_id'=> $proyecto->id,
             'nombre'    => $row['nombre'],
             'telefono'  => $row['telefono'],
-            'X'         => $row['X'],
+            'X'         => $row['x'],
             'comentario'=> $row['comentario'],
             'e'         => $row['e'],
             'f'         => $row['f'],
