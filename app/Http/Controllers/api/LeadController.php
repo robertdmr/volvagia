@@ -3,9 +3,15 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Imports\LeadImport;
+use App\Models\Ajetreo;
+use App\Models\Asesores;
 use App\Models\Lead;
+use App\Models\Projects;
+use App\Models\Situacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class LeadController extends Controller
 {
@@ -54,5 +60,20 @@ class LeadController extends Controller
         $column = $request->columna;
         $lead->update([$column => $request->valor]);
         return response()->json(['message' => 'ok', 'lead' => $lead]);
+    }
+
+    public function import(Request $request){
+
+        // get name of file
+        if($request->has('excel')){
+            $file = $request->file('excel');
+            // iimport excel
+            Excel::import(new LeadImport, $file);
+
+            return response()->json(['message' => 'ok'],200);
+        }
+
+        return response()->json(['error' => 'Archivo no enviado'],400);
+
     }
 }

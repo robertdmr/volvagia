@@ -85,7 +85,7 @@
                                 <th>X</th>
                                 <th>COMENTARIO</th>
                                 <th>E</th>
-                                @if ($user = Auth::user()->role == 'admin')
+                                @if($user = Auth::user()->role == 'admin')
                                 <th>Elim</th>
                                 @endif
                                 <th class="d-none"></th>
@@ -296,11 +296,14 @@
     $(document).ready(function() {
         var tabla = $('#listado').DataTable({
             dom: 'Bfrtip',
-            stateSave: true,
             buttons: [
-                'copy', 'excel', 'pdf'
+                {
+                    text:'<i class="fas fa-file-excel"></i>',
+                    action:function(e,dt,node,config){
+                        alert('Exportar a Excel')
+                    }
+                }
             ],
-
             language: {
                 'url': '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
             },

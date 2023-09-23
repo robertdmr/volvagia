@@ -76,7 +76,7 @@
                 <div class="card">
                     <div class="card-header">
                         {{ __('Dashboard') }}
-
+                        <button class="btn btn-success btn-sm float-end" onclick="openImportData()">Importar</button>
                     </div>
 
                     <div class="card-body table-responsiv ">
@@ -304,6 +304,34 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="modalImportData">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#modalImportData"
+                    aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h2>Importar Datos de Excel</h2>
+                    <form action="{{ url('api/import') }}" method="POST" enctype="multipart/form-data" id="frmImportData">
+                        @csrf
+                        <div class="row">
+                            <div class="col">
+                                <input type="file" name="excel" id="excel" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col text-end">
+                                <button class="btn btn-primary">Importar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('scripts')
@@ -639,5 +667,42 @@
             $("#backdrop").hide();
             $("#spinner").hide();
         }
+
+        const openImportData = () => {
+            $("#modalImportData").modal("show");
+        }
+
+        $("#frmImportData").on('submit', function(e){
+            e.preventDefault();
+            var form = $(this);
+            var data = new FormData(form[0]);
+            $.ajax({
+                url: "{{ url('/api/import') }}",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                data: data,
+                processData: false,
+                contentType: false,
+                beforeSend: function() {
+                    mostrarLoader();
+                },
+                success: function(response) {
+                    if (response.message == "ok") {
+                        location.reload();
+                    }
+                    console.log(response)
+                    ocultarLoader();
+                },
+                error: function(error) {
+                    console.log(error.responseJSON)
+                    // convert to json
+                    var errors = JSON.parse(error.responseText)
+                    alert(errors.error)
+                    ocultarLoader();
+                }
+            });
+        })
     </script>
 @endsection
