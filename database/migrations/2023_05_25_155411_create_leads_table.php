@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('nombre')->nullable();
             $table->string('telefono')->nullable();
             $table->string('X')->nullable();
-            $table->string('comentario')->nullable();
+            $table->text('comentario')->nullable();
             $table->string('e')->nullable();
             $table->string('f')->nullable();
             $table->string('mes')->nullable();
