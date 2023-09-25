@@ -49,13 +49,12 @@ class LeadImport implements ToModel, WithHeadingRow
             ]);
         }
 
-        $date = date('Y-m-d', strtotime($row['fecha']));
-        $dateOrigen = $row['fecha'];
+        $date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['fecha']);
 
         return new Lead([
             'c'         => $situacion->nombre,
             'ajetreo'   => $ajetreo->nombre,
-            'as'        => $dateOrigen,
+            'as'        => $asesor->nombre,
             'fecha'     => $date,
             'referente' => $row['referente'],
             'project_id'=> $proyecto->id,
