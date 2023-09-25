@@ -116,7 +116,7 @@
                                             <span class="badge bg-success">{{ $lead->as }}</span>
                                         </td>
                                         <td>
-                                            {{ $lead->fecha }}
+                                            {{ date_format(date_create($lead->fecha), 'd-m-Y') }}
                                         </td>
                                         <td>
                                             {{ $lead->referente }}
