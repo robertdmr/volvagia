@@ -696,6 +696,11 @@
                     ocultarLoader();
                 },
                 error: function(error) {
+                    if(error.message){
+                        errortxt = JSON.parse(error.message)
+                        alert(errortxt)
+                        return
+                    }
                     console.log(error.responseJSON)
                     // convert to json
                     var errors = JSON.parse(error.responseText)
