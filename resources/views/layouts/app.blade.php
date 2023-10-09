@@ -30,9 +30,9 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
-    <link rel="stylesheet" href="{{ asset('styles/styles.css') }}">
-
     @yield('styles')
+
+    <link rel="stylesheet" href="{{ asset('styles/styles.css') }}">
 </head>
 
 <body>

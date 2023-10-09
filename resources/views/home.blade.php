@@ -34,6 +34,9 @@
         }
 
         /* RESIZE */
+        table{
+            border-collapse: separate;
+        }
         .table th {
             position: relative;
         }
@@ -43,6 +46,15 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            border-left:solid 0.5px #9d9d9d;
+            border-right:solid 0.5px #b5b3b3;
+            margin:0;
+            padding: 3px 5px !important;
+        }
+        tr{
+            border-color: transparent !important;
+            margin:0;
+            padding: 0;
         }
 
         .resizer {
@@ -80,7 +92,7 @@
                     </div>
 
                     <div class="card-body table-responsiv ">
-                        <table id="listado" class="display table  table-sm" style="width:100%">
+                        <table id="listado" class="display table  table-sm cell-border" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>Acc</th>
