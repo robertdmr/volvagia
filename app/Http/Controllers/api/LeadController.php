@@ -76,4 +76,12 @@ class LeadController extends Controller
         return response()->json(['error' => 'Archivo no enviado'],400);
 
     }
+
+    public function destroyMultiple(){
+        if(request()->has('ids')){
+            $ids = request()->ids;
+            Lead::whereIn('id',explode(',',$ids))->delete();
+            return response()->json(['message' => 'ok'],200);
+        }
+    }
 }

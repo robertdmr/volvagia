@@ -2,7 +2,10 @@
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('plugins/resize/jquery.dataTables.colResize.css') }}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.7.0/css/select.dataTables.min.css">
+
     <script src="{{ asset('plugins/resize/jquery.dataTables.colResize.js') }}"></script>
+    <script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
 
     <style>
         #backdrop {
@@ -88,6 +91,7 @@
                 <div class="card">
                     <div class="card-header">
                         {{ __('Dashboard') }}
+                        <button class="btn btn-danger btn-sm float-end ms-1" onclick="borrarSeleccionados()">Borrar Seleccionados</button>
                         <button class="btn btn-success btn-sm float-end" onclick="openImportData()">Importar</button>
                     </div>
 
@@ -400,9 +404,35 @@
                 },
                 scrollX: true,
                 paging: true,
-                select: true,
+                select: {
+                    style: 'multi'
+                },
                 pageLength: 100,
                 colResize: options
+            });
+            var arrayId = [];
+            tabla
+            .on('select', function (e, dt, type, indexes) {
+                //obtiene el valor de la columna 13 de la fila seleccionada
+                var rowData = tabla.rows(indexes).data().toArray();
+                //obtiene el valor de la columna 13
+                var id = rowData[0][13];
+                arrayId.push(id);
+                //guardar el valor en un array en el localstorage
+                localStorage.setItem('id', arrayId);
+                console.log(arrayId)
+            })
+            .on('deselect', function (e, dt, type, indexes) {
+                var rowData = tabla.rows(indexes).data().toArray();
+                //obtiene el valor de la columna 13
+                var id = rowData[0][13];
+                //remover dato del array
+                arrayId = arrayId.filter(function(item) {
+                    return item !== id
+                });
+                localStorage.setItem('id', arrayId);
+                console.log(arrayId)
+
             });
 
         });
@@ -721,5 +751,38 @@
                 }
             });
         })
+        function borrarSeleccionados(){
+            var ids = localStorage.getItem('id');
+            if(ids == []){
+                alert("No hay registros seleccionados")
+                return
+            }
+            if (confirm("Desea eliminar los registros seleccionados?") == true) {
+                $.ajax({
+                    url: "{{ url('/api/leads-delete') }}",
+                    data: {ids: ids},
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    method: "POST",
+                    success: function(response) {
+                        if (response.message = "ok") {
+                            console.log(response)
+                            location.reload();
+                        }
+                    },
+                    error: function(error) {
+                        const errors = error.responseJSON.errors;
+                        var msg = "";
+                        if (errors) {
+                            $.each(errors, function(key, value) {
+                                msg += value + "\n";
+                            });
+                            alert(msg)
+                        }
+                    }
+                });
+            }
+        }
     </script>
 @endsection

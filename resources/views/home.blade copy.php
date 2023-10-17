@@ -49,6 +49,7 @@
 @endsection
 
 @section('content')
+
 <div id="backdrop"></div>
 <h2>PAGINA DE BACKUP</h2>
 <div id="spinner">
@@ -308,7 +309,9 @@
                 'url': '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
             },
             scrollX: true,
-            select: true,
+            select: {
+                style: 'multi'
+            },
             stateSaveCallback: function(settings,data) {
                 localStorage.setItem( 'DataTables_' + settings.sInstance, JSON.stringify(data))
             },
