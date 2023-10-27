@@ -161,6 +161,26 @@
                                     </tr>
                                 @endforeach
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Acc</th>
+                                    <th>C</th>
+                                    <th>AJETREO</th>
+                                    <th>AS</th>
+                                    <th>FECHA</th>
+                                    <th>REFERENTE</th>
+                                    <th>PROYECTO</th>
+                                    <th>NOMBRE</th>
+                                    <th>TELEFONO</th>
+                                    <th>X</th>
+                                    <th>COMENTARIO</th>
+                                    <th>E</th>
+                                    @if ($user = Auth::user()->role == 'admin')
+                                        <th>Elim</th>
+                                    @endif
+                                    <th class="d-none"></th>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -397,6 +417,7 @@
         }
         $(document).ready(function() {
             var tabla = $('#listado').DataTable({
+                dom: 'Pfrtip',
                 columnDefs: colwidths,
                 searching: false,
                 language: {
@@ -408,7 +429,8 @@
                     style: 'multi'
                 },
                 pageLength: 100,
-                colResize: options
+                colResize: options,
+
             });
             var arrayId = [];
             tabla
@@ -420,7 +442,6 @@
                 arrayId.push(id);
                 //guardar el valor en un array en el localstorage
                 localStorage.setItem('id', arrayId);
-                console.log(arrayId)
             })
             .on('deselect', function (e, dt, type, indexes) {
                 var rowData = tabla.rows(indexes).data().toArray();
@@ -431,7 +452,6 @@
                     return item !== id
                 });
                 localStorage.setItem('id', arrayId);
-                console.log(arrayId)
 
             });
 

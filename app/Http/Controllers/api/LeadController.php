@@ -29,12 +29,14 @@ class LeadController extends Controller
 
         $validate = $request->validate([
             'ajetreo' => 'required',
+            'nombre' => 'unique:leads,nombre',
+            'telefono' => 'unique:leads,telefono',
             'as' => 'required',
             'fecha' => 'required',
         ]);
 
         if (!$validate){
-            return "error";
+            return "error en los datos";
         }
 
         $lead = Lead::create($request->all());

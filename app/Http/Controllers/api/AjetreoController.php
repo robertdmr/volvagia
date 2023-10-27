@@ -10,7 +10,7 @@ class AjetreoController extends Controller
 {
     public function index()
     {
-        $ajetreo = Ajetreo::all();
+        $ajetreo = Ajetreo::orderBy('nombre', 'asc')->get();
         return response()->json($ajetreo);
     }
 
@@ -27,6 +27,12 @@ class AjetreoController extends Controller
 
     public function store(Request $request)
     {
+        $validate = $request->validate([
+            'nombre' => 'required|unique:ajetreos,nombre',
+        ]);
+        if (!$validate) {
+            return "Error al validar datos";
+        }
         $ajetreo = Ajetreo::create($request->all());
         return response()->json($ajetreo);
     }

@@ -45,7 +45,7 @@ class HomeController extends Controller
             // return $leads;
 
         $projects = Projects::all();
-        $situaciones = \App\Models\Situacion::all();
+        $situaciones = \App\Models\Situacion::orderBy('nombre', 'desc')->get();
         $ajetreos = \App\Models\Ajetreo::all();
         $asesores = \App\Models\Asesores::all();
         $users = User::all();

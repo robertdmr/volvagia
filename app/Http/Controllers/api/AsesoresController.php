@@ -10,7 +10,7 @@ class AsesoresController extends Controller
 {
     public function index()
     {
-        $asesores = Asesores::all();
+        $asesores = Asesores::orderBy('nombre', 'asc')->get();
         return response()->json($asesores);
     }
 
@@ -27,6 +27,12 @@ class AsesoresController extends Controller
 
     public function store(Request $request)
     {
+        $validate = $request->validate([
+            'nombre' => 'required|unique:asesores,nombre',
+        ]);
+        if (!$validate) {
+            return "Error al validar datos";
+        }
         $asesores = Asesores::create($request->all());
         return response()->json($asesores);
     }

@@ -10,7 +10,7 @@ class SituacionController extends Controller
 {
     public function index()
     {
-        $situacion = Situacion::all();
+        $situacion = Situacion::orderBy('nombre','asc')->get();
         return response()->json($situacion);
     }
 
@@ -27,6 +27,12 @@ class SituacionController extends Controller
 
     public function store(Request $request)
     {
+        $validate = $request->validate([
+            'nombre' => 'required|unique:situaciones,nombre',
+        ]);
+        if(!$validate){
+            return "Error al validar datos";
+        }
         $situacion = Situacion::create($request->all());
         return response()->json($situacion);
     }

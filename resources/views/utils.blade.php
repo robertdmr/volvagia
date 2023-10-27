@@ -115,7 +115,12 @@
             listadoAsesores();
             listadoAjetreos();
 
-        })
+        });
+        $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+});
     </script>
     <script>
         function addSituacion(){
@@ -314,6 +319,9 @@
                     }else if(action=="ajetreo"){
                         listadoAjetreos();
                     }
+                },
+                error: function(error){
+                    alert(error.responseJSON.message);
                 }
             });
 
