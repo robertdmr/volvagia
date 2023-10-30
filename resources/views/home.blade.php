@@ -381,6 +381,7 @@
 
 @section('scripts')
     <script>
+        var arrayId = [];
         // elimina el dato widths del localstorage si existe witdhs
         if (localStorage.getItem('widths')) {
             localStorage.removeItem('widths');
@@ -437,12 +438,21 @@
                 pageLength: 100,
                 colResize: options,
             });
-            var arrayId = [];
         });
 
         function select(id){
             //agrega una clase a esa fila correspondiente a el id
-            $("tr#c"+id).toggleClass('seleccionado')
+            $("tr#c"+id).toggleClass('seleccionado');
+            // agregar el id al arrayId
+            //buscar el id dentro del arrayId
+            if(arrayId.includes(id)){
+                // si existe el id en el arrayId lo elimina
+                arrayId.splice(arrayId.indexOf(id),1);
+                localStorage.setItem('ids',arrayId)
+                return
+            }
+            arrayId.push(id);
+            localStorage.setItem('ids',arrayId)
         }
 
         function openDatos(id) {
@@ -471,7 +481,6 @@
             celda.addEventListener('keydown', function(event) {
                 var valorEditable = celda.textContent;
                 if (event.keyCode === 13) {
-                    console.log(primeraColumna, valorEditable, indiceCelda);
                     actualizarValor(primeraColumna, valorEditable, Columna);
 
                     $("input[type=search]").focus();
@@ -760,8 +769,8 @@
             });
         })
         function borrarSeleccionados(){
-            var ids = localStorage.getItem('id');
-            if(ids == []){
+            var ids = localStorage.getItem('ids');
+            if(ids == ""){
                 alert("No hay registros seleccionados")
                 return
             }
@@ -776,6 +785,7 @@
                     success: function(response) {
                         if (response.message = "ok") {
                             console.log(response)
+                            localStorage.setItem('ids',"")
                             location.reload();
                         }
                     },
