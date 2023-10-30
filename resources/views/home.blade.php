@@ -810,11 +810,15 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     method: "POST",
+                    beforeSend: function() {
+                        mostrarLoader();
+                    },
                     success: function(response) {
                         if (response.message = "ok") {
                             localStorage.setItem('ids',"")
                             location.reload();
                         }
+                        ocultarLoader();
                     },
                     error: function(error) {
                         const errors = error.responseJSON.errors;
@@ -823,6 +827,7 @@
                             $.each(errors, function(key, value) {
                                 msg += value + "\n";
                             });
+                            ocultarLoader();
                             alert(msg)
                         }
                     }
@@ -845,6 +850,7 @@
                         if (response.message = "ok") {
                             location.reload();
                         }
+                        ocultarLoader();
                     },
                     error: function(error) {
                         const errors = error.responseJSON.errors;
@@ -853,6 +859,7 @@
                             $.each(errors, function(key, value) {
                                 msg += value + "\n";
                             });
+                            ocultarLoader();
                             alert(msg)
                         }
                     }

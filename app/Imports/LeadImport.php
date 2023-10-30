@@ -71,6 +71,8 @@ class LeadImport implements ToModel, WithHeadingRow
             $row['proyecto'] = $project->id;
         }
 
+        $user_id = request()->user()->id;
+
         $date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['fecha']);
         if($error == 0){
             return new Lead([
@@ -88,7 +90,7 @@ class LeadImport implements ToModel, WithHeadingRow
                 'f'         => $row['f'],
                 'mes'       => $row['mes'],
                 'blanco'    => $this->uploadId,
-                'user_id'   => 1
+                'user_id'   => $user_id,
             ]);
         }
     }
