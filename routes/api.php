@@ -36,6 +36,7 @@ Route::get('/leads/{lead}', [LeadController::class, 'show']);
 Route::delete('/leads/{lead}', [LeadController::class, 'destroy']);
 Route::post('/lead/{lead}', [LeadController::class, 'updateColumn']);
 Route::post('/leads-delete', [LeadController::class, 'destroyMultiple']);
+Route::post('/delete-planilla', [LeadController::class, 'destroyPlanilla']);
 
 Route::post('/import', [LeadController::class, 'import']);
 

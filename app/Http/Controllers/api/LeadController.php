@@ -86,4 +86,12 @@ class LeadController extends Controller
             return response()->json(['message' => 'ok'],200);
         }
     }
+
+    public function destroyPlanilla(){
+        if(request()->has('id')){
+            $id = request()->id;
+            Lead::where('blanco',$id)->delete();
+            return response()->json(['message' => 'ok'],200);
+        }
+    }
 }

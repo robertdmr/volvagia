@@ -32,8 +32,7 @@ class LeadImport implements ToModel, WithHeadingRow
         $this->asesores = Asesores::all()->pluck('nombre')->toArray();
         $this->situaciones = Situacion::all()->pluck('nombre')->toArray();
         $this->proyectos = Projects::all()->pluck('nombre')->toArray();
-        $date = new DateTime();
-        $this->uploadId = Hash::make($date);
+        $this->uploadId = Hash::make(date('YmdHis'));
 
     }
     public function model(array $row)
@@ -67,10 +66,13 @@ class LeadImport implements ToModel, WithHeadingRow
             $error = 1;
             //agregar el error al array de mensajes arrayMsg
             array_push($errorMsg, 'El proyecto '.$row['proyecto'].' no existe');
+        }else{
+            $project = Projects::where('nombre', $row['proyecto'])->first();
+            $row['proyecto'] = $project->id;
         }
 
         $date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['fecha']);
-        if($error == 1){
+        if($error == 0){
             return new Lead([
                 'c'         => $row['c'],
                 'ajetreo'   => $row['ajetreo'],

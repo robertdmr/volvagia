@@ -96,6 +96,7 @@
                         {{ __('Dashboard') }}
                         <button class="btn btn-danger btn-sm float-end ms-1" onclick="borrarSeleccionados()">Borrar Seleccionados</button>
                         <button class="btn btn-success btn-sm float-end" onclick="openImportData()">Importar</button>
+                        <button class="btn btn-warning btn-sm ms-5 d-none" id="deseleccion" onclick="deseleccionarTodo()">Quitar selección</button>
                     </div>
 
                     <div class="card-body table-responsiv ">
@@ -116,6 +117,7 @@
                                     <th>E</th>
                                     @if ($user = Auth::user()->role == 'admin')
                                         <th>Elim</th>
+                                        <th>Borrar Planilla</th>
                                     @endif
                                     <th class="d-none"></th>
                                 </tr>
@@ -163,33 +165,18 @@
                                         </td>
                                         <td>{{ $lead->e }}</td>
                                         @if ($user = Auth::user()->role == 'admin')
-                                            <td><i class="fas fa-close text-danger" role="button"
-                                                    onclick="fnEliminar({{ $lead->id }})"></i></td>
+                                            <td>
+                                                <i class="fas fa-close text-danger" role="button"
+                                                    onclick="fnEliminar({{ $lead->id }})"></i>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-danger"><i class="fa-solid fa-triangle-exclamation" onclick="borrarPlanilla('{{ $lead->blanco }}')"></i></button>
+                                            </td>
                                         @endif
                                         <td class="d-none">{{ $lead->id }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>Acc</th>
-                                    <th>C</th>
-                                    <th>AJETREO</th>
-                                    <th>AS</th>
-                                    <th>FECHA</th>
-                                    <th>REFERENTE</th>
-                                    <th>PROYECTO</th>
-                                    <th>NOMBRE</th>
-                                    <th>TELEFONO</th>
-                                    <th>X</th>
-                                    <th>COMENTARIO</th>
-                                    <th>E</th>
-                                    @if ($user = Auth::user()->role == 'admin')
-                                        <th>Elim</th>
-                                    @endif
-                                    <th class="d-none"></th>
-                                </tr>
-                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -453,6 +440,8 @@
             }
             arrayId.push(id);
             localStorage.setItem('ids',arrayId)
+            // mostrar boton deseleccionar
+            $("button#deseleccion").removeClass('d-none')
         }
 
         function openDatos(id) {
@@ -756,6 +745,7 @@
                 },
                 error: function(error) {
                     if(error.message){
+                        console.log(error)
                         errortxt = JSON.parse(error.message)
                         alert(errortxt)
                         return
@@ -800,6 +790,45 @@
                         }
                     }
                 });
+            }
+        }
+        function borrarPlanilla(blanco){
+            if(confirm("Desea eliminar todos los registros de esta planilla?")){
+                $.ajax({
+                    url: "{{ url('/api/delete-planilla') }}",
+                    data: {id: blanco},
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    method: "POST",
+                    success: function(response) {
+                        if (response.message = "ok") {
+                            console.log(response)
+                            location.reload();
+                        }
+                    },
+                    error: function(error) {
+                        const errors = error.responseJSON.errors;
+                        var msg = "";
+                        if (errors) {
+                            $.each(errors, function(key, value) {
+                                msg += value + "\n";
+                            });
+                            alert(msg)
+                        }
+                    }
+                });
+            }
+        }
+
+        function deseleccionarTodo(){
+            if(localStorage.getItem('ids') != ""){
+                // quitar la clase seleccionado a todos los tr
+                $("tr").removeClass('seleccionado');
+                // quitar el arrayId
+                localStorage.setItem('ids',"")
+                // esconder boton quitar seleccion
+                $("button#deseleccion").addClass('d-none')
             }
         }
     </script>
