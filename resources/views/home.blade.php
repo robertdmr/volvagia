@@ -3,9 +3,11 @@
 @section('styles')
     <link rel="stylesheet" href="{{ asset('plugins/resize/jquery.dataTables.colResize.css') }}">
     <link rel="stylesheet" href="https://cdn.datatables.net/select/1.7.0/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.4.0/css/fixedHeader.bootstrap5.min.css">
 
     <script src="{{ asset('plugins/resize/jquery.dataTables.colResize.js') }}"></script>
     <script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
 
     <style>
         #backdrop {
@@ -18,6 +20,9 @@
             z-index: 9999;
             display: none;
         }
+        thead input {
+        width: 100%;
+    }
 
         #spinner {
             position: fixed;
@@ -76,6 +81,10 @@
         }
         .seleccionado{
             background-color: #f0dc5d !important;
+        }
+        table.dataTable thead tr.filter th{
+            padding: 5px 13px !important;
+
         }
     </style>
 @endsection
@@ -397,7 +406,6 @@
             },
             onResize: function(column) {},
             onResizeEnd: function(column, columns) {
-                console.log(column)
                 widths = [];
                 columns.forEach(function(column) {
                     widths.push(column.width);
@@ -409,14 +417,18 @@
             },
             stateSaveCallback: function(settings, data) {},
             stateLoadCallback: function(settings) {
-                console.log(settings)
             }
         }
         $(document).ready(function() {
+            $('#listado thead tr')
+                .clone(true)
+                .addClass('filters')
+                .appendTo('#listado thead');
+
             var tabla = $('#listado').DataTable({
                 dom: 'frtipP',
                 columnDefs: colwidths,
-                searching: false,
+                searching: true,
                 language: {
                     'url': '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
                 },
@@ -424,7 +436,41 @@
                 paging: true,
                 pageLength: 100,
                 colResize: options,
+                orderCellsTop: true,
+                fixedHeader: true,
+                initComplete: function() {
+                    $('#listado_filter').addClass('d-none')
+                    var api = this.api();
+                    // For each column
+                    api.columns().eq(0).each(function(colIdx) {
+                        // Set the header cell to contain the input element
+                        var cell = $('.filters th').eq($(api.column(colIdx).header()).index());
+                        var title = $(cell).text();
+                        if (title == "Acc" || title == "Elim" || title=="Borrar Planilla") {
+                            $(cell).html('---');
+                            return;
+                        }
+                        $(cell).html( '<input type="text" placeholder="'+title+'" class="form-control" />' );
+                        // On every keypress in this input
+                        $('input', $('.filters th').eq($(api.column(colIdx).header()).index()) )
+                            .off('keyup change')
+                            .on('keyup change', function (e) {
+                                e.stopPropagation();
+                                // Get the search value
+                                $(this).attr('title', $(this).val());
+                                var regexr = '({search})'; //$(this).parents('th').find('select').val();
+                                var cursorPosition = this.selectionStart;
+                                // Search the column for that value
+                                api
+                                    .column(colIdx)
+                                    .search((this.value != "") ? regexr.replace('{search}', '((('+this.value+')))') : "", this.value != "", this.value == "")
+                                    .draw();
+                                $(this).focus()[0].setSelectionRange(cursorPosition, cursorPosition);
+                            });
+                    });
+                }
             });
+
         });
 
         function select(id){
@@ -514,7 +560,6 @@
                     if (response.message == "ok") {
                         location.reload();
                     }
-                    console.log(response)
                     ocultarLoader();
                 },
                 error: function(error) {
@@ -549,7 +594,6 @@
                         listarProyectos();
                         $('#datosProyectos').modal('hide');
                     }
-                    console.log(response)
                 },
                 error: function(error) {
                     const errors = error.responseJSON.errors;
@@ -583,7 +627,6 @@
                             proyectos.append(nuevoOption);
                         });
                     }
-                    console.log(data)
                 },
                 error: function(error) {
                     const errors = error.responseJSON.errors;
@@ -625,7 +668,6 @@
                         $("#blanco").val(data.lead.blanco);
                         $("#user_id").val(data.lead.user_id);
                     }
-                    console.log(data)
                 },
                 error: function(error) {
                     const errors = error.responseJSON.errors;
@@ -686,7 +728,6 @@
                 },
                 success: function(response) {
                     if (response.message = "ok") {
-                        console.log(response)
                         ocultarLoader();
                     }
                 },
@@ -740,17 +781,14 @@
                     if (response.message == "ok") {
                         location.reload();
                     }
-                    console.log(response)
                     ocultarLoader();
                 },
                 error: function(error) {
                     if(error.message){
-                        console.log(error)
                         errortxt = JSON.parse(error.message)
                         alert(errortxt)
                         return
                     }
-                    console.log(error.responseJSON)
                     // convert to json
                     var errors = JSON.parse(error.responseText)
                     alert(errors.error)
@@ -774,7 +812,6 @@
                     method: "POST",
                     success: function(response) {
                         if (response.message = "ok") {
-                            console.log(response)
                             localStorage.setItem('ids',"")
                             location.reload();
                         }
@@ -801,9 +838,11 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     method: "POST",
+                    beforeSend:function(){
+                        mostrarLoader();
+                    },
                     success: function(response) {
                         if (response.message = "ok") {
-                            console.log(response)
                             location.reload();
                         }
                     },
