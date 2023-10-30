@@ -74,6 +74,9 @@
         .resizing {
             border-right: 2px solid blue;
         }
+        .seleccionado{
+            background-color: #f0dc5d !important;
+        }
     </style>
 @endsection
 
@@ -119,12 +122,18 @@
                             </thead>
                             <tbody>
                                 @foreach ($leads as $lead)
-                                    <tr>
+                                    <tr id="c{{ $lead->id }}">
                                         <td>
                                             <span class="text-danger" onclick="openDatos('{{ $lead->id }}')"><i
                                                     class="fas fa-pencil" role="button"></i></span>
                                         </td>
-                                        <td><span class="badge bg-warning">{{ $lead->c }}</span></td>
+                                        <td>
+                                            <div>
+                                                <span class="badge bg-warning" onclick="select('{{ $lead->id }}')">
+                                                    {{ $lead->c }}
+                                                </span>
+                                            </div>
+                                        </td>
                                         <td>
                                             {{ $lead->ajetreo }}
                                         </td>
@@ -417,7 +426,7 @@
         }
         $(document).ready(function() {
             var tabla = $('#listado').DataTable({
-                dom: 'Pfrtip',
+                dom: 'frtipP',
                 columnDefs: colwidths,
                 searching: false,
                 language: {
@@ -425,37 +434,16 @@
                 },
                 scrollX: true,
                 paging: true,
-                select: {
-                    style: 'multi'
-                },
                 pageLength: 100,
                 colResize: options,
-
             });
             var arrayId = [];
-            tabla
-            .on('select', function (e, dt, type, indexes) {
-                //obtiene el valor de la columna 13 de la fila seleccionada
-                var rowData = tabla.rows(indexes).data().toArray();
-                //obtiene el valor de la columna 13
-                var id = rowData[0][13];
-                arrayId.push(id);
-                //guardar el valor en un array en el localstorage
-                localStorage.setItem('id', arrayId);
-            })
-            .on('deselect', function (e, dt, type, indexes) {
-                var rowData = tabla.rows(indexes).data().toArray();
-                //obtiene el valor de la columna 13
-                var id = rowData[0][13];
-                //remover dato del array
-                arrayId = arrayId.filter(function(item) {
-                    return item !== id
-                });
-                localStorage.setItem('id', arrayId);
-
-            });
-
         });
+
+        function select(id){
+            //agrega una clase a esa fila correspondiente a el id
+            $("tr#c"+id).toggleClass('seleccionado')
+        }
 
         function openDatos(id) {
             $('form#frmDatos')[0].reset();

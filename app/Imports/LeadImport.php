@@ -7,6 +7,8 @@ use App\Models\Asesores;
 use App\Models\Lead;
 use App\Models\Projects;
 use App\Models\Situacion;
+use DateTime;
+use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat\DateFormatter;
@@ -22,6 +24,7 @@ class LeadImport implements ToModel, WithHeadingRow
     private $asesores = [];
     private $situaciones = [];
     private $proyectos = [];
+    private $uploadId = "";
 
     public function __construct()
     {
@@ -29,6 +32,9 @@ class LeadImport implements ToModel, WithHeadingRow
         $this->asesores = Asesores::all()->pluck('nombre')->toArray();
         $this->situaciones = Situacion::all()->pluck('nombre')->toArray();
         $this->proyectos = Projects::all()->pluck('nombre')->toArray();
+        $date = new DateTime();
+        $this->uploadId = Hash::make($date);
+
     }
     public function model(array $row)
     {
@@ -79,7 +85,7 @@ class LeadImport implements ToModel, WithHeadingRow
                 'e'         => $row['e'],
                 'f'         => $row['f'],
                 'mes'       => $row['mes'],
-                'blanco'    => $row['blanco'],
+                'blanco'    => $this->uploadId,
                 'user_id'   => 1
             ]);
         }
