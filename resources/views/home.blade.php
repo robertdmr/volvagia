@@ -789,6 +789,7 @@
                         alert(errortxt)
                         return
                     }
+                    console.log(error)
                     // convert to json
                     var errors = JSON.parse(error.responseText)
                     alert(errors.error)

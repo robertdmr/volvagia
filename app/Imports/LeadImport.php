@@ -28,7 +28,7 @@ class LeadImport implements ToModel, WithHeadingRow
 
     public function __construct()
     {
-        $this->ajetreos = Ajetreo::all()->pluck('nombre')->toArray();
+        $this->ajetreos = Ajetreo::all('nombre')->pluck('nombre')->toArray();
         $this->asesores = Asesores::all()->pluck('nombre')->toArray();
         $this->situaciones = Situacion::all()->pluck('nombre')->toArray();
         $this->proyectos = Projects::all()->pluck('nombre')->toArray();
@@ -72,8 +72,10 @@ class LeadImport implements ToModel, WithHeadingRow
         }
 
         $user_id = request()->user()->id;
+        // $date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['fecha']);
+        $date = "2021-01-01";
+        $mes = "MES";
 
-        $date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['fecha']);
         if($error == 0){
             return new Lead([
                 'c'         => $row['c'],
@@ -88,7 +90,7 @@ class LeadImport implements ToModel, WithHeadingRow
                 'comentario'=> $row['comentario'],
                 'e'         => $row['e'],
                 'f'         => $row['f'],
-                'mes'       => $row['mes'],
+                'mes'       => $mes,
                 'blanco'    => $this->uploadId,
                 'user_id'   => $user_id,
             ]);

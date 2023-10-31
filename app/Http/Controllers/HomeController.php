@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ajetreo;
 use App\Models\Lead;
 use Illuminate\Http\Request;
 use App\Models\Projects;
@@ -26,6 +27,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+
         $search = request('search');
         $leads = Lead::leftJoin('projects', 'projects.id', '=', 'leads.project_id')
                 ->select('leads.*','projects.nombre as proyecto')
