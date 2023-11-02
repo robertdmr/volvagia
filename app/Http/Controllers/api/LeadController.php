@@ -69,13 +69,57 @@ class LeadController extends Controller
         // get name of file
         if($request->has('excel')){
             $file = $request->file('excel');
-            // iimport excel
-            Excel::import(new LeadImport, $file);
 
-            return response()->json(['message' => 'ok'],200);
+            $importFile = Excel::toCollection(new LeadImport, $file);
+            $datosArray = $importFile[0];
+            // return $datosArray;
+            $msgError = [];
+            $noExiste = [];
+            foreach($datosArray as $errores){
+                $proyecto = Projects::where('nombre', $errores['proyecto'])->first();
+                if(!$proyecto){
+                    //revisa si no existe el proyecto dentro del array noExiste, sino lo agrega
+                    if(!in_array($errores['proyecto'], $noExiste)){
+                        array_push($noExiste, $errores['proyecto']);
+                        array_push($msgError, 'El proyecto '.$errores['proyecto'].' no existe');
+                    }
+                }
+            }
+            if($msgError!=[]){
+                return response()->json(['error' => $msgError],400);
+            }
+
+            foreach($datosArray as $newdatos){
+                $proyecto = Projects::where('nombre', $newdatos['proyecto'])->first();
+                $proyectoId = $proyecto->id;
+                $fecha = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject(floatval($newdatos['fecha']));
+
+                //inserta en el bd los datos
+
+                $lead = Lead::create([
+                    'c'         => $newdatos['c'],
+                    'ajetreo'   => $newdatos['ajetreo'],
+                    'as'        => $newdatos['as'],
+                    'fecha'     => $fecha,
+                    'referente' => $newdatos['referente'],
+                    'project_id'=> $proyectoId,
+                    'nombre'    => $newdatos['nombre'],
+                    'telefono'  => $newdatos['telefono'],
+                    'X'         => $newdatos['x'],
+                    'comentario'=> $newdatos['comentario'],
+                    'e'         => $newdatos['e'],
+                    'f'         => $newdatos['f'],
+                    'mes'       => $newdatos['mes'],
+                    'user_id'   => request()->user()->id,
+                ]);
+
+            }
+
+            return response()->json(['message' => "ok"],200);
+
         }
 
-        return response()->json(['error' => 'Archivo no enviado'],400);
+        return response()->json(['error' => 'Error al subir datos'],400);
 
     }
 

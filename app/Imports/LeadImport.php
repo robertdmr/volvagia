@@ -73,7 +73,7 @@ class LeadImport implements ToModel, WithHeadingRow
 
         $user_id = request()->user()->id;
         // $date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['fecha']);
-        $date = "2021-01-01";
+        $date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['fecha']);
         $mes = "MES";
 
         if($error == 0){

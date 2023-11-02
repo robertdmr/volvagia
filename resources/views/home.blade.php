@@ -368,6 +368,10 @@
                             </div>
                         </div>
                     </form>
+                    <div class="errorContainer">
+                        <ul class="text-danger" id="errorList">
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -781,18 +785,18 @@
                     if (response.message == "ok") {
                         location.reload();
                     }
+                    console.log(response)
                     ocultarLoader();
                 },
                 error: function(error) {
-                    if(error.message){
-                        errortxt = JSON.parse(error.message)
-                        alert(errortxt)
-                        return
-                    }
-                    console.log(error)
                     // convert to json
-                    var errors = JSON.parse(error.responseText)
-                    alert(errors.error)
+                    var errors = JSON.parse(error.responseText);
+                    // recorre el array y muestra los mensajes en errorList
+                    $.each(errors.error, function(key, value) {
+                        $("#errorList").append("<li>" + value + "</li>");
+                    });
+                    // console.log(json)
+
                     ocultarLoader();
                 }
             });
